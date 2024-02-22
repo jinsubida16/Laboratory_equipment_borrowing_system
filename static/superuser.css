@@ -1,0 +1,93 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+body{
+    margin: 0;
+    padding: 0;
+    background-color: #1f1f1f;
+    background-size: cover;
+}
+
+.tabs {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 100%;
+    font-family: sans-serif;
+  }
+  
+  .tabs__label {
+    padding: 10px 6px;
+    margin-bottom:0px;
+    cursor: pointer;
+  }
+  
+  .tabs__radio {
+    display: none;  
+  }
+  
+  .tabs__content {
+    order: 1;
+    width: 100%;
+    border-bottom: 3px solid #dddddd;
+    line-height: 1.5;
+    font-size: 0.9em;
+    display: none;
+    margin-top:0px;
+  }
+  
+  .tabs__radio:checked + .tabs__label {
+    font-weight: bold;
+    color: #00c8ff;
+    border-bottom: 2px solid #00c8ff;
+    background-color: #161616;
+  }
+  
+  .tabs__radio:checked + .tabs__label + .tabs__content {
+    display: initial;
+  }
+
+.contents {
+    background-color: #161616;
+    padding: 15px;
+    align-content: center;
+  }
+
+.mt-5{
+  max-width: 100%;
+}
+.container{
+  max-width: 100%;  
+}
+
+.add-user-form{
+  max-width: 500px;
+  margin-left:100px;
+}
+.additem-form{
+  max-width: 500px;
+  margin-left:100px;
+}
+.rfid_result{
+  max-width: 500px;
+  margin-left:100px;
+}
+
+.add-text{
+  max-width: 500px;
+  margin-left:100px;
+}
+
+.error{
+  max-width: 500px;
+  margin-left:100px;
+  color: red;
+}
+
+.rfid_result{
+  max-width: 500px;
+  margin-left:100px;
+  color: #00c8ff;
+}
+.scanned{
+  max-width: 500px;
+  margin-left:100px;
+  color: green;
+}

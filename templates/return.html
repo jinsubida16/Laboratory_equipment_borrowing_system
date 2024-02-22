@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>return</title>
+    <meta property="og:title" content="register" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+
+    <style data-tag="reset-style-sheet">
+      html {  line-height: 1.15;}body {  margin: 0;}* {  box-sizing: border-box;  border-width: 0;  border-style: solid;}p,li,ul,pre,div,h1,h2,h3,h4,h5,h6,figure,blockquote,figcaption {  margin: 0;  padding: 0;}button {  background-color: transparent;}button,input,optgroup,select,textarea {  font-family: inherit;  font-size: 100%;  line-height: 1.15;  margin: 0;}button,select {  text-transform: none;}button,[type="button"],[type="reset"],[type="submit"] {  -webkit-appearance: button;}button::-moz-focus-inner,[type="button"]::-moz-focus-inner,[type="reset"]::-moz-focus-inner,[type="submit"]::-moz-focus-inner {  border-style: none;  padding: 0;}button:-moz-focus,[type="button"]:-moz-focus,[type="reset"]:-moz-focus,[type="submit"]:-moz-focus {  outline: 1px dotted ButtonText;}a {  color: inherit;  text-decoration: inherit;}input {  padding: 2px 4px;}img {  display: block;}html { scroll-behavior: smooth  }
+    </style>
+    <style data-tag="default-style-sheet">
+      html {
+        font-family: Inter;
+        font-size: 16px;
+      }
+
+      body {
+        font-weight: 400;
+        font-style:normal;
+        text-decoration: none;
+        text-transform: none;
+        letter-spacing: normal;
+        line-height: 1.15;
+        color: var(--dl-color-gray-black);
+        background-color: var(--dl-color-gray-white);
+
+      }
+    </style>
+    <style>
+      [data-thq="thq-dropdown"]:hover > [data-thq="thq-dropdown-list"] {
+          display: flex;
+        }
+
+        [data-thq="thq-dropdown"]:hover > div [data-thq="thq-dropdown-arrow"] {
+          transform: rotate(90deg);
+        }
+    </style>
+  </head>
+  <body>
+    <link rel="stylesheet" href="./static/style.css" />
+    <div>
+      <link href="./static/return.css" rel="stylesheet" />
+      
+      <div class="return-container">
+        <header data-role="Header" class="return-header">
+          <div class="return-container1">
+            <span class="return-username">{{ user.username }} - {{id_code.student_code}}</span>
+          </div>
+          <span id="title" class="return-title">RETURN ITEMS</span>
+          <div class="return-container2">
+            <div class="return-option-button">
+              <a class="btn btn-primary option-button" href="{{ url_for('return_settings') }}">
+              <img
+                alt="image"
+                src="./static/images/gear_option.png"
+                loading="eager"
+                class="return-image button"
+              /></a>
+            </div>
+          </div>
+        </header>
+        <div class="return-container3">
+          <a onclick="scanRFID()"><div class="return-container4">
+            <img
+              alt="image"
+              src="./static/images/scan_item.png"
+              class="return-image1"
+            /></a>
+            <form class="return-form">
+              <span class="return-text">
+                <span id="scan-item">SCAN ITEM</span>
+                <br />
+              </span>
+              <span class="return-text03">ITEM CODE</span>
+              <span id="rfidResult" class="rfid_result"></span>
+              <input
+                type="hidden"
+                id="hidden-item-code"
+                name="hidden-item-code"
+                placeholder="hidden-item-code"
+                class="input return-textinput"
+              />
+              <label id="status" class="return-text04">STATUS: </label>
+            </form>
+          </div>
+          <div class="return-container5">
+            <span class="return-text05">ITEM</span>
+            <form id="returnform" name="return-form" class="return-returnform" method="POST" action="{{ url_for('return_items')}}">
+              <div class="return-container6">
+                <span class="return-itemid">
+                  <label id="item-id">ITEM ID</label>
+                  <br />
+                  <input
+                  type="hidden"
+                  placeholder="item ID"
+                  id="hidden_itemCode" name="hidden_itemCode"
+                  class="home-textinput input"
+                />
+                </span>
+                <span class="return-itemtype">
+                  <label id="item-type">ITEM TYPE</label>
+                  <br />
+                  <input
+                  type="hidden"
+                  placeholder="item type"
+                  id="hidden_itemType" name="hidden_itemType"
+                  class="home-textinput input"
+                />
+                </span>
+              </div>
+              <div class="return-container7">
+                <div
+                  data-thq="thq-dropdown"
+                  class="return-thq-dropdown list-item"
+                >
+                  <div
+                    data-thq="thq-dropdown-toggle"
+                    class="return-dropdown-toggle"
+                  >
+                    <span class="return-text10">
+                      <span class="return-text11">CONDITION</span>
+                      <br />
+                    </span>
+                    <div
+                      data-thq="thq-dropdown-arrow"
+                      class="return-dropdown-arrow"
+                    >
+                      <svg viewBox="0 0 1024 1024" class="return-icon">
+                        <path d="M426 726v-428l214 214z"></path>
+                      </svg>
+                    </div>
+                  </div>
+                  <ul data-thq="thq-dropdown-list" class="return-dropdown-list">
+                    <li
+                      data-thq="thq-dropdown"
+                      class="return-dropdown list-item"
+                    >
+                      <div
+                        data-thq="thq-dropdown-toggle"
+                        class="return-dropdown-toggle1 button"
+                      >
+                        <span class="return-good">
+                          <span class="return-text13">GOOD</span>
+                          <br />
+                        </span>
+                      </div>
+                    </li>
+                    <li
+                      data-thq="thq-dropdown"
+                      class="return-dropdown1 list-item"
+                    >
+                      <div
+                        data-thq="thq-dropdown-toggle"
+                        class="return-dropdown-toggle2 button"
+                      >
+                        <span class="return-damaged">DAMAGED</span>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <span class="return-text15">                  
+                  <input
+                  type="hidden"
+                  placeholder="item condition"
+                  id="hidden_itemcondition" name="hidden_itemcondition"
+                  class="home-textinput input"
+                /></span>
+              </div>
+              {% if select_condition %}
+              <div class="error-message">
+                Please scan rfid and select condition!
+                </div>
+              {% endif %}
+              <button
+                id="return-button"
+                type="submit"
+                class="button return-button"
+                onclick = "returnItem()"
+              >
+                RETURN
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+      <script>
+        var isScanInProgress = false;
+
+        async function scanRFID() {
+              if (isScanInProgress) {
+            return;
+        }
+        isScanInProgress = true;
+    
+        var rfidResultElement = document.getElementById('rfidResult');
+        var scanButton = document.getElementById('scan-item');
+
+        rfidResultElement.classList.remove('error');
+        rfidResultElement.classList.remove('scanned');
+        rfidResultElement.classList.add('rfid_result');
+        document.getElementById('rfidResult').innerText = '( SCANNING )';
+        scanButton.disabled = true;
+    
+        try {
+          console.log('Try block is working...');
+            const response = await fetch('/read_rfid', {
+                method: 'POST',
+            });
+    
+            const data = await response.json();
+    
+            if (data.rfid_id) {
+              rfidResultElement.innerText = data.rfid_id;
+              document.getElementById('hidden-item-code').value = data.rfid_id;
+              document.getElementById('hidden_itemCode').value = data.rfid_id;
+              document.getElementById('hidden_itemType').value = data.rfidType;
+  
+              // Check if the scanned RFID is present in the user database
+              checkItemExist(data.rfid_id);
+          } else {
+              document.getElementById('rfidResult').innerText = 'ID MISSING';
+              rfidResultElement.classList.remove('scanned');
+              rfidResultElement.classList.remove('rfid_result');
+              rfidResultElement.classList.add('error');
+          }
+        } catch (error) {
+            console.error('Error:', error);
+            // Handle errors and keep the button disabled
+        } finally {
+            // Re-enable the button after processing (whether success or error)
+            scanButton.disabled = false;
+            isScanInProgress = false;
+        }
+      }
+      
+        document.querySelectorAll('.return-dropdown-toggle1, .return-dropdown-toggle2').forEach(item => {
+          item.addEventListener('click', function() {
+              // Get the selected condition text
+              const conditionText = this.querySelector('.return-text13, .return-damaged').innerText;
+      
+              // Set the values in the input and span elements
+              document.getElementById('hidden_itemcondition').value = conditionText;
+              document.querySelector('.return-text15 input').value = conditionText;
+          });
+      });
+      function checkItemExist(rfidValue) {
+        // Send an asynchronous request to check if the RFID value exists in the user database
+        fetch('/checkItemExist', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ rfidValue: rfidValue }),
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (data.itemAvailable) {
+              document.getElementById('rfidResult').classList.remove('rfid_result', 'scanned');
+              document.getElementById('rfidResult').classList.add('error');
+              document.getElementById('status').innerText = 'STATUS: ITEM NOT BORROWED';
+            } else if (data.itemBorrowed) {
+              document.getElementById('rfidResult').classList.remove('error', 'rfid_result');
+              document.getElementById('rfidResult').classList.add('scanned');
+              document.getElementById('status').innerText = 'STATUS: SUCCESS';
+              document.getElementById('item-id').innerText = rfidValue;
+      
+              // Set values only after confirming data is available
+              if (data.rfidType) {
+                  var itemType;
+
+                  switch (data.rfidType) {
+                      case 'kb':
+                          itemType = 'KEYBOARD';
+                          break;
+                      case 'ms':
+                          itemType = 'MOUSE';
+                          break;
+                      case 'mnt':
+                          itemType = 'MONITOR';
+                          break;
+                      case 'psu':
+                          itemType = 'POWER SUPPLY';
+                          break;
+                      case 'etc':
+                          itemType = 'OTHERS';
+                          break;
+                      default:
+                          // Set a default value or handle other cases if needed
+                          itemType = data.rfidType;
+                  }
+                document.getElementById('item-type').innerText = itemType;
+                document.getElementById('hidden_itemType').value = data.rfidType;
+              } else {
+                document.getElementById('item-type').innerText = 'Type Unavailable';
+                document.getElementById('hidden_itemType').value = '';
+              }
+      
+              document.getElementById('hidden_itemcode').value = rfidValue;
+            } else {
+              document.getElementById('rfidResult').classList.remove('rfid_result', 'scanned');
+              document.getElementById('rfidResult').classList.add('error');
+              document.getElementById('status').innerText = 'STATUS: UNAVAILABLE';
+            }
+          })
+          .catch(error => {
+            console.error('Error:', error);
+          });
+      }
+  </script>
+  </body>
+</html>

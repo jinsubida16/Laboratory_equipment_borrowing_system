@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>borrowoptions - register</title>
+    <meta property="og:title" content="borrowoptions - register" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+
+    <style data-tag="reset-style-sheet">
+      html {  line-height: 1.15;}body {  margin: 0;}* {  box-sizing: border-box;  border-width: 0;  border-style: solid;}p,li,ul,pre,div,h1,h2,h3,h4,h5,h6,figure,blockquote,figcaption {  margin: 0;  padding: 0;}button {  background-color: transparent;}button,input,optgroup,select,textarea {  font-family: inherit;  font-size: 100%;  line-height: 1.15;  margin: 0;}button,select {  text-transform: none;}button,[type="button"],[type="reset"],[type="submit"] {  -webkit-appearance: button;}button::-moz-focus-inner,[type="button"]::-moz-focus-inner,[type="reset"]::-moz-focus-inner,[type="submit"]::-moz-focus-inner {  border-style: none;  padding: 0;}button:-moz-focus,[type="button"]:-moz-focus,[type="reset"]:-moz-focus,[type="submit"]:-moz-focus {  outline: 1px dotted ButtonText;}a {  color: inherit;  text-decoration: inherit;}input {  padding: 2px 4px;}img {  display: block;}html { scroll-behavior: smooth  }
+    </style>
+    <style data-tag="default-style-sheet">
+      html {
+        font-family: Inter;
+        font-size: 16px;
+      }
+
+      body {
+        font-weight: 400;
+        font-style:normal;
+        text-decoration: none;
+        text-transform: none;
+        letter-spacing: normal;
+        line-height: 1.15;
+        color: var(--dl-color-gray-black);
+        background-color: var(--dl-color-gray-white);
+
+      }
+    </style>
+    <style>
+      [data-thq="thq-dropdown"]:hover > [data-thq="thq-dropdown-list"] {
+          display: flex;
+        }
+
+        [data-thq="thq-dropdown"]:hover > div [data-thq="thq-dropdown-arrow"] {
+          transform: rotate(90deg);
+        }
+    </style>
+  </head>
+  <body>
+    <link rel="stylesheet" href="./static/style.css" />
+    <div>
+      <link href="./static/borrowoptions.css" rel="stylesheet" />
+
+      <div class="borrowoptions-container">
+        <header data-role="Header" class="borrowoptions-header">
+          <div class="borrowoptions-container01">
+            <span class="borrowoptions-username">{{ session.get('username', 'USERNAME') }} - {{ session.get('student_code', 'STUDENT_CODE') }}</span>
+          </div>
+          <span id="title" class="borrowoptions-title">OPTIONS</span>
+          <div class="borrowoptions-container02">
+            <div class="borrowoptions-option-button">
+              <span class="borrowoptions-text">
+                <a class="btn btn-primary back-button" href="{{ url_for('borrow_back') }}"><span>BACK</span></a>
+                <br />
+              </span>
+            </div>
+          </div>
+        </header>
+        <div class="borrowoptions-container03">
+          <div class="borrowoptions-container04">
+            <div class="borrowoptions-container05">
+              <form class="borrowoptions-form" method="POST" action="{{ url_for('borrow_settings')}}">
+                <div class="borrowoptions-container06">
+                  <span class="borrowoptions-text03">USERNAME:&nbsp;</span>
+                  <input
+                    type="text"
+                    placeholder="{{ session.get('username', 'USERNAME') }}"
+                    id="username"
+                    name="username"
+                    class="input"
+                  />
+                </div>
+                {% if change_error %}
+                <div class="error-message">
+                    Error changing credentials!
+                </div>
+                {% endif %}
+                {% if change_success %}
+                <div class="success-message">
+                    Credentials changed successfully!
+                </div>
+                {% endif %}
+                <div class="borrowoptions-container07">
+                  <span class="borrowoptions-text04">PASSWORD:&nbsp;</span>
+                  <input
+                    type="password"
+                    placeholder="CHANGE PASSWORD"
+                    id="password"
+                    name="password"
+                    class="input"
+                  />
+                </div>
+                <div class="borrowoptions-container08">
+                  <span class="borrowoptions-text05">ID NUMBER:</span>
+                  <span class="borrowoptions-text06">
+                    <span> {{ user.student_code }}</span>
+                    <br />
+                  </span>
+                </div>
+                <button type="submit" class="button borrowoptions-button">
+                  <span class="borrowoptions-text09">
+                    <span>CHANGE</span>
+                    <br class="borrowoptions-text11" />
+                  </span>
+                </button>
+              </form>
+            </div>
+            <div class="borrowoptions-container09">
+              <a type="button" class="button borrowoptions-button1" href="{{ url_for('return_items') }}">
+                <span class="borrowoptions-text12">
+                  <span>RETURN</span>
+                  <br class="borrowoptions-text14" />
+                </span>
+              </a>
+              <a type="button" class="button borrowoptions-button2" href="{{ url_for('logout') }}">
+                <span class="borrowoptions-text15">
+                  <span>LOGOUT</span>
+                  <br class="borrowoptions-text17" />
+                </span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

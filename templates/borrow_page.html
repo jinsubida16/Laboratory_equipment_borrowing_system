@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>borrow_page</title>
+    <meta property="og:title" content="register" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <style data-tag="reset-style-sheet">
+      html {  line-height: 1.15;}body {  margin: 0;}* {  box-sizing: border-box;  border-width: 0;  border-style: solid;}p,li,ul,pre,div,h1,h2,h3,h4,h5,h6,figure,blockquote,figcaption {  margin: 0;  padding: 0;}button {  background-color: transparent;}button,input,optgroup,select,textarea {  font-family: inherit;  font-size: 100%;  line-height: 1.15;  margin: 0;}button,select {  text-transform: none;}button,[type="button"],[type="reset"],[type="submit"] {  -webkit-appearance: button;}button::-moz-focus-inner,[type="button"]::-moz-focus-inner,[type="reset"]::-moz-focus-inner,[type="submit"]::-moz-focus-inner {  border-style: none;  padding: 0;}button:-moz-focus,[type="button"]:-moz-focus,[type="reset"]:-moz-focus,[type="submit"]:-moz-focus {  outline: 1px dotted ButtonText;}a {  color: inherit;  text-decoration: inherit;}input {  padding: 2px 4px;}img {  display: block;}html { scroll-behavior: smooth  }
+    </style>
+    <style data-tag="default-style-sheet">
+      html {
+        font-family: Inter;
+        font-size: 16px;
+      }
+
+      body {
+        font-weight: 400;
+        font-style:normal;
+        text-decoration: none;
+        text-transform: none;
+        letter-spacing: normal;
+        line-height: 1.15;
+        color: var(--dl-color-gray-black);
+        background-color: var(--dl-color-gray-white);
+        scrollbar-width: thin;
+        scrollbar-color: #686868 #1f1f1f;
+      }
+    </style>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"
+      data-tag="font"
+    />
+    <style>
+      [data-thq="thq-dropdown"]:hover > [data-thq="thq-dropdown-list"] {
+          display: flex;
+        }
+
+        [data-thq="thq-dropdown"]:hover > div [data-thq="thq-dropdown-arrow"] {
+          transform: rotate(90deg);
+        }
+        
+
+    </style>
+  </head>
+  <body>
+    <link rel="stylesheet" href="./static/borrow_page_style.css" />
+    <div>
+      <link href="./static/borrow_page.css" rel="stylesheet" />
+
+      <div class="home-container">
+        <header data-role="Header" class="home-header">
+          <div class="home-container01">
+            <span class="home-username">{{ user.username }} - {{id_code.student_code}}</span>
+          </div>
+          <span id="title" class="home-title">BORROW ITEMS</span>
+          <div class="home-container02">
+            <img
+              alt="image"
+              src="./static/images/cart_logo.png"
+              class="home-image"
+              id="scrollToBottomButton"
+            />
+            <a class="btn btn-primary option-button" href="{{ url_for('borrow_settings') }}">
+            <img
+              alt="image"
+              src="./static/images/gear_option.png"
+              class="home-image1"
+            /></a>
+          </div>
+        </header>
+        <div class="home-container03">
+          <div class="home-container04">
+            <a onclick="scanRFID()">
+            <img
+              src="./static/images/scan_item.png"
+              alt="image"
+              class="home-image2"
+            /></a>
+            <form class="home-form">
+              <span class="home-text">
+                <span id="scan-item">CLICK TO SCAN ITEM</span>
+                <br />
+              </span>
+              <span id="rfidResult" class="rfid_result"></span>
+          <input
+            type="hidden"
+            id="hidden-item-code"
+            name="hidden-item-code"
+            placeholder="hidden-item-code"
+            class="input home-textinput"
+          />
+          <label id="status" class="home-text04">STATUS:</label>
+              <button type="submit" id="cart-button" class="button home-button" onclick="addCart(event)">
+                ADD TO CART
+              </button>
+            </form>
+          </div>
+          <div class="home-container05">
+            <span class="home-text04">AVAILABLE ITEMS</span>
+            <div class="home-container06">
+              <div class="home-container07">
+                <div
+                  data-thq="thq-dropdown"
+                  class="home-thq-dropdown list-item"
+                >
+                  <div
+                    data-thq="thq-dropdown-toggle"
+                    class="home-dropdown-toggle"
+                  >
+                    <span class="home-text05">KEYBOARD</span>
+                    <div
+                      data-thq="thq-dropdown-arrow"
+                      class="home-dropdown-arrow"
+                    >
+                      <svg viewBox="0 0 1024 1024" class="home-icon">
+                        <path d="M426 726v-428l214 214z"></path>
+                      </svg>
+                    </div>
+                  </div>
+                  <ul data-thq="thq-dropdown-list" class="home-dropdown-list">
+                    {% for item in kb %}
+                    <li data-thq="thq-dropdown" class="home-dropdown list-item">
+                      <div data-thq="thq-dropdown-toggle" class="home-dropdown-toggle1">
+                        <span class="home-text11">{{ item.code }}</span>
+                      </div>
+                    </li>
+                  {% endfor %}
+                  </ul>
+                </div>
+              </div>
+              <div class="home-container08">
+                <div
+                  data-thq="thq-dropdown"
+                  class="home-thq-dropdown1 list-item"
+                >
+                  <div
+                    data-thq="thq-dropdown-toggle"
+                    class="home-dropdown-toggle02"
+                  >
+                    <span class="home-text09">MOUSE</span>
+                    <div
+                      data-thq="thq-dropdown-arrow"
+                      class="home-dropdown-arrow1"
+                    >
+                      <svg viewBox="0 0 1024 1024" class="home-icon02">
+                        <path d="M426 726v-428l214 214z"></path>
+                      </svg>
+                    </div>
+                  </div>
+                  <ul data-thq="thq-dropdown-list" class="home-dropdown-list1">
+                    {% for item in ms %}
+                    <li data-thq="thq-dropdown" class="home-dropdown list-item">
+                      <div data-thq="thq-dropdown-toggle" class="home-dropdown-toggle1">
+                        <span class="home-text11">{{ item.code }}</span>
+                      </div>
+                    </li>
+                  {% endfor %}
+                  </ul>
+                </div>
+              </div>
+              <div class="home-container09">
+                <div
+                  data-thq="thq-dropdown"
+                  class="home-thq-dropdown2 list-item"
+                >
+                  <div
+                    data-thq="thq-dropdown-toggle"
+                    class="home-dropdown-toggle04"
+                  >
+                    <span class="home-text13">MONITOR</span>
+                    <div
+                      data-thq="thq-dropdown-arrow"
+                      class="home-dropdown-arrow2"
+                    >
+                      <svg viewBox="0 0 1024 1024" class="home-icon04">
+                        <path d="M426 726v-428l214 214z"></path>
+                      </svg>
+                    </div>
+                  </div>
+                  <ul data-thq="thq-dropdown-list" class="home-dropdown-list2">
+                    {% for item in mnt %}
+                    <li data-thq="thq-dropdown" class="home-dropdown list-item">
+                      <div data-thq="thq-dropdown-toggle" class="home-dropdown-toggle1">
+                        <span class="home-text11">{{ item.code }}</span>
+                      </div>
+                    </li>
+                  {% endfor %}
+                  </ul>
+                </div>
+              </div>
+              <div class="home-container10">
+                <div
+                  data-thq="thq-dropdown"
+                  class="home-thq-dropdown3 list-item"
+                >
+                  <div
+                    data-thq="thq-dropdown-toggle"
+                    class="home-dropdown-toggle06"
+                  >
+                    <span class="home-text17">POWER SUPPLY</span>
+                    <div
+                      data-thq="thq-dropdown-arrow"
+                      class="home-dropdown-arrow3"
+                    >
+                      <svg viewBox="0 0 1024 1024" class="home-icon06">
+                        <path d="M426 726v-428l214 214z"></path>
+                      </svg>
+                    </div>
+                  </div>
+                  <ul data-thq="thq-dropdown-list" class="home-dropdown-list3">
+                    {% for item in psu %}
+                    <li data-thq="thq-dropdown" class="home-dropdown list-item">
+                      <div data-thq="thq-dropdown-toggle" class="home-dropdown-toggle1">
+                        <span class="home-text11">{{ item.code }}</span>
+                      </div>
+                    </li>
+                  {% endfor %}
+                  </ul>
+                </div>
+              </div>
+              <div class="home-container11">
+                <div
+                  data-thq="thq-dropdown"
+                  class="home-thq-dropdown4 list-item"
+                >
+                  <div
+                    data-thq="thq-dropdown-toggle"
+                    class="home-dropdown-toggle08"
+                  >
+                    <span class="home-text21">
+                      <span>OTHERS</span>
+                      <br />
+                    </span>
+                    <div
+                      data-thq="thq-dropdown-arrow"
+                      class="home-dropdown-arrow4"
+                    >
+                      <svg viewBox="0 0 1024 1024" class="home-icon08">
+                        <path d="M426 726v-428l214 214z"></path>
+                      </svg>
+                    </div>
+                  </div>
+                  <ul data-thq="thq-dropdown-list" class="home-dropdown-list4">
+                    {% for item in etc %}
+                    <li data-thq="thq-dropdown" class="home-dropdown list-item">
+                      <div data-thq="thq-dropdown-toggle" class="home-dropdown-toggle1">
+                        <span class="home-text11">{{ item.code }}</span>
+                      </div>
+                    </li>
+                  {% endfor %}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="cart-container" class="home-container12">
+          <span class="home-text27">CART LIST</span>
+          <div class="home-container13">
+            <div class="home-container14">
+              <span class="home-text28">ITEM ID</span>
+            </div>
+            <div class="home-container15">
+              <span class="home-text29">
+                <span class="home-text30">ITEM TYPE</span>
+                <br />
+              </span>
+            </div>
+            <div class="home-container16"></div>
+          </div>
+          <div class="home-container17">
+            <ul class="list home-ul">
+              <li class="list-item home-li">
+                <div class="home-container18">
+                  <div class="home-container19"><span>12345678</span></div>
+                  <div class="home-container20"><span>keyboard</span></div>
+                  <div class="home-container21">
+                    <button type="button" class="button home-button1">
+                      Remove
+                    </button>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+          {% if borrow_success %}
+          <div class="borrow-success">
+          Item borrowed Successfully!
+          </div>
+          {% endif %}
+          <form class="home-form1" method="POST" action="{{ url_for('confirm_borrow') }}">
+            <div class="home-container22">
+                <label for="return-datetime" class="home-text31">Return Date and Time:</label>
+                <input type="datetime-local" id="return-datetime" name="return-datetime" class="input home-textinput" value="{{ current_datetime | datetimeformat }}">
+            </div>
+            <!-- Add the hidden input field for storing the datetime value -->
+            <input type="hidden" id="return-datetime-hidden" name="return-datetime-hidden" value="{{ current_datetime }}">
+            <div class="home-container22">
+                <button type="submit" id="confirm-borrow-btn" class="button home-button2">CONFIRM</button>
+            </div>
+        </form>
+        
+        <script>
+            // Function to update the hidden field when return-datetime changes
+            function updateHiddenDatetime() {
+                var returnDatetimeInput = document.getElementById('return-datetime');
+                var hiddenDatetimeInput = document.getElementById('return-datetime-hidden');
+        
+                // Update the hidden field value with the current value of return-datetime
+                hiddenDatetimeInput.value = returnDatetimeInput.value;
+            }
+        
+            document.addEventListener('DOMContentLoaded', function () {
+                // Add an input event listener to return-datetime
+                var returnDatetimeInput = document.getElementById('return-datetime');
+                returnDatetimeInput.addEventListener('input', updateHiddenDatetime);
+        
+                // Initial update of the hidden field
+                updateHiddenDatetime();
+            });
+        </script>
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <script>
+    var isScanInProgress = false;
+
+    async function scanRFID() {
+          if (isScanInProgress) {
+        return;
+    }
+    isScanInProgress = true;
+
+    var rfidResultElement = document.getElementById('rfidResult');
+    var scanButton = document.getElementById('scan-item');
+
+    rfidResultElement.classList.remove('error');
+    rfidResultElement.classList.remove('scanned');
+    rfidResultElement.classList.add('rfid_result');
+    document.getElementById('rfidResult').innerText = '( SCANNING )';
+    scanButton.disabled = true;
+
+    try {
+        console.log('Try block is working...');
+        const response = await fetch('/read_rfid', {
+            method: 'POST',
+        });
+
+        const data = await response.json();
+
+        if (data.rfid_id) {
+          rfidResultElement.innerText = data.rfid_id;
+          document.getElementById('hidden-item-code').value = data.rfid_id;
+
+          // Check if the scanned RFID is present in the user database
+          checkItemExist(data.rfid_id);
+      } else {
+          document.getElementById('rfidResult').innerText = 'ID MISSING';
+          rfidResultElement.classList.remove('scanned');
+          rfidResultElement.classList.remove('rfid_result');
+          rfidResultElement.classList.add('error');
+          }
+    } catch (error) {
+        console.error('Error:', error);
+        // Handle errors and keep the button disabled
+    } finally {
+        // Re-enable the button after processing (whether success or error)
+        scanButton.disabled = false;
+        isScanInProgress = false;
+    }
+  }
+
+    function checkItemExist(rfidValue) {
+        // Send an asynchronous request to check if the RFID value exists in the user database
+        fetch('/checkItemExist', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ rfidValue: rfidValue }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.itemAvailable) {
+                document.getElementById('rfidResult').classList.remove('rfid_result', 'error');
+                document.getElementById('rfidResult').classList.add('scanned');
+                document.getElementById('status').innerText = 'STATUS: AVAILABLE';
+
+            } else {
+                document.getElementById('rfidResult').value = 'MISSING';
+                document.getElementById('rfidResult').classList.remove('scanned', 'rfid_result');
+                document.getElementById('rfidResult').classList.add('error');
+                document.getElementById('status').innerText = 'STATUS: UNAVAILABLE';
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+
+function addCart(event) {
+    console.log('Add to cart button clicked!');
+    var rfidResultText = document.getElementById('hidden-item-code').value;
+    event.preventDefault();
+    console.log(rfidResultText);
+
+    // Make an AJAX request to add the item to the cart
+    fetch('/add_to_cart', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ rfidResult: rfidResultText }),  // Change variable name to rfidResult
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Response from server:', data);  // Add this line for debugging
+          if (data.success) {
+            // Item added successfully, update the cart display
+            updateCartDisplay();
+          } else {
+            console.error(data.message);
+          }
+        })
+        .catch(error => console.error('Error:', error));
+      }
+
+function updateCartDisplay() {
+    // Make an AJAX request to get the updated cart items
+    fetch('/get_cart_items')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Check if cart_items is present in the response
+                const cartItems = data.cart_items || [];
+                // Update the cart display based on the received data
+                updateCartList(cartItems);
+            } else {
+                console.error('Error:', data.error);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+function updateCartList(cartItems) {
+    var cartList = document.querySelector('.home-container17 ul');
+    // Clear the existing cart list
+    cartList.innerHTML = '';
+
+    // Check if cartItems is an array
+    if (!Array.isArray(cartItems)) {
+        console.error('Invalid cartItems format:', cartItems);
+        return;
+    }
+
+    // Iterate over the received cart items and update the display
+cartItems.forEach(item => {
+  var listItem = document.createElement('li');
+        listItem.className = 'list-item home-li';
+
+        // Create a new container to wrap home-container18, home-container19, and home-container21
+        var newContainer = document.createElement('div');
+        newContainer.className = 'new-container1';
+
+        var container18 = document.createElement('div');
+        container18.className = 'home-container18';
+
+        var spanID = document.createElement('span');
+        spanID.innerText = item.code;
+        container18.appendChild(spanID);
+
+        var container19 = document.createElement('div');
+        container19.className = 'home-container19';
+        var spanType = document.createElement('span');
+        switch (item.type) {
+          case 'kb':
+              spanType.innerText = 'Keyboard';
+              break;
+          case 'ms':
+              spanType.innerText = 'Mouse';
+              break;
+          case 'mnt':
+              spanType.innerText = 'Monitor';
+              break;
+          case 'psu':
+              spanType.innerText = 'Power Supply';
+              break;
+          case 'etc':
+              spanType.innerText = 'Others';
+              break;              
+      }
+        container19.appendChild(spanType);
+
+        var container21 = document.createElement('div');
+        container21.className = 'home-container21';
+        var removeButton = document.createElement('button');
+        removeButton.type = 'button';
+        removeButton.className = 'button home-button1';
+        removeButton.innerText = 'Remove';
+        removeButton.addEventListener('click', function () {
+            removeCart(item.code);
+        });
+        container21.appendChild(removeButton);
+
+        // Append home-container18, home-container19, and home-container21 to newContainer
+        newContainer.appendChild(container18);
+        newContainer.appendChild(container19);
+        newContainer.appendChild(container21);
+
+        // Append newContainer to the listItem
+        listItem.appendChild(newContainer);
+
+        // Append the listItem to the cartList
+        cartList.appendChild(listItem);
+    });
+}
+
+async function removeCart(itemCode) {
+  try {
+      // Make an AJAX request to remove the item from the cart
+      const response = await fetch('/remove_from_cart', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ code: itemCode }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+          // Item removed successfully, update the cart display
+          updateCartList(data.cart_items);
+      } else {
+          console.error(data.message);
+      }
+  } catch (error) {
+      console.error('Error:', error);
+  }
+}
+// Initial update of the cart display
+updateCartDisplay();
+        // Add a click event listener to the image
+        document.getElementById('scrollToBottomButton').addEventListener('click', function () {
+          // Scroll to the bottom of the page
+          window.scrollTo(0, document.body.scrollHeight);
+      });
+
+
+$(document).ready(function () {
+    $('#confirm-borrow-btn').click(function () {
+        // Make an AJAX request to confirm borrow
+        $.ajax({
+            url: '/confirm_borrow',
+            type: 'POST',
+            success: function (data) {
+                if (data.success) {
+                    // Clear the cart display after confirmation
+                    updateCartDisplay();
+                    alert('Items confirmed and marked as borrowed.');
+                } else {
+                    console.error('Error confirming borrow:', data.message);
+                }
+            },
+            error: function (error) {
+                console.error('Error confirming borrow:', error);
+            }
+        });
+    });
+});
+
+function adjustTimezone() {
+  // Get the input element
+  var inputElement = document.getElementById('return-datetime');
+
+  // Get the value from the input element
+  var inputValue = inputElement.value;
+
+  // Convert the local date and time to UTC
+  var localDate = new Date(inputValue);
+  var utcDate = new Date(localDate.getTime() + localDate.getTimezoneOffset() * 60000);
+
+  // Calculate the time difference for UTC+8
+  var timezoneOffset = 8 * 60; // UTC+8 in minutes
+  var adjustedDate = new Date(utcDate.getTime() + timezoneOffset * 60000);
+
+  // Format the adjusted date and time
+  var adjustedDateString = adjustedDate.toISOString().slice(0, 16);
+
+  // Set the adjusted value back to the input element
+  inputElement.value = adjustedDateString;
+}
+</script>
+</html>

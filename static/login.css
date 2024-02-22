@@ -1,0 +1,353 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+.home-container {
+  width: 100%;
+  display: flex;
+  overflow: hidden;
+  min-height: 100vh;
+  align-items: center;
+  flex-direction: column;
+}
+.home-header {
+  width: 100%;
+  display: flex;
+  max-width: 100%;
+  align-items: center;
+  padding-top: var(--dl-space-space-twounits);
+  padding-left: var(--dl-space-space-threeunits);
+  padding-right: var(--dl-space-space-threeunits);
+  padding-bottom: var(--dl-space-space-twounits);
+  justify-content: center;
+  background-color: #004dc8;
+}
+.home-text {
+  color: rgb(255, 255, 255);
+  font-size: 50px;
+  font-style: normal;
+  font-weight: 800;
+}
+.home-container1 {
+  width: 100%;
+  height:87vh;
+  display: flex;
+  align-items: flex-start;
+}
+.home-container2 {
+  flex: 0 0 auto;
+  width: 50%;
+  height: auto;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+}
+.home-image {
+  width: 410px;
+  height: 413px;
+  align-self: center;
+  margin-top: var(--dl-space-space-fourunits);
+  object-fit: cover;
+}
+.home-text3 {
+  color: #0067ee;
+  font-size: 100px;
+  align-self: center;
+  font-style: normal;
+  margin-top: var(--dl-space-space-unit);
+  font-weight: 700;
+}
+.rfid_result {
+    color: #fcfcfc;
+    font-style: normal;
+    font-weight: 700;
+
+
+}
+.home-form {
+  width: 924px;
+  height:85vh;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.home-container3 {
+  flex: 0 0 auto;
+  width: auto;
+  height: auto;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.home-container4 {
+  flex: 0 0 auto;
+  width: auto;
+  height: auto;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.home-container5 {
+  flex: 0 0 auto;
+  width: auto;
+  height: auto;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.home-container6 {
+  flex: 0 0 auto;
+  width: auto;
+  height: auto;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.home-text4 {
+  color: #ffffff;
+  font-size: 100px;
+  font-style: normal;
+  margin-top: var(--dl-space-space-sixunits);
+  font-weight: 700;
+}
+.home-textinput {
+  font-size: 40px;
+  margin-top: var(--dl-space-space-threeunits);
+}
+.home-textinput1 {
+  font-size: 40px;
+  margin-top: var(--dl-space-space-threeunits);
+}
+.home-button {
+  color: #ffffff;
+  font-size: 40px;
+  font-style: normal;
+  margin-top: var(--dl-space-space-threeunits);
+  font-weight: 700;
+  background-color: #0032ff;
+  -webkit-tap-highlight-color:  rgba(255, 255, 255, 0); 
+}
+.home-text5 {
+  color: #ffffff;
+  font-size: 30px;
+  margin-top: var(--dl-space-space-twounits);
+}
+.home-button1 {
+  color: #ffffff;
+  font-size: 40px;
+  font-style: normal;
+  margin-top: var(--dl-space-space-twounits);
+  font-weight: 700;
+  background-color: #00a324;
+  -webkit-tap-highlight-color:  rgba(255, 255, 255, 0); 
+}
+
+.error-message{
+  margin-top: 24px;
+  color: red;
+  font-size: 30px;
+}
+
+.login-button{
+  margin-top: 24px;
+  -webkit-tap-highlight-color:  rgba(255, 255, 255, 0);
+}
+.home-button:hover {
+  background-color: #006eff; /* Darker green color on hover */
+}
+
+.home-button1:hover {
+  background-color: #00ff0d; /* Darker green color on hover */
+}
+
+@media(max-width: 800px) {
+
+  .home-container {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: url('./videos/background.gif') no-repeat center center fixed;
+    background-size: cover;
+  }
+  .home-header {
+    height: 68px;
+    background-image: radial-gradient(circle at center, rgb(0, 167, 255) 0.00%,rgb(1, 0, 153) 100.00%);
+  }
+  .home-text1 {
+    color: #ffffff;
+    font-size: 28px;
+    font-style: normal;
+    font-weight: 700;
+  }
+  .home-container1 {
+    height: 400px;
+    margin-top: 0px;
+  }
+  .home-container2 {
+    height: 100%;
+  }
+  .home-image {
+    width: 180px;
+    height: 176px;
+    align-self: flex-start;
+    margin-top: 40px;
+    margin-left: 137px;
+    padding-top: 0px;
+    margin-right: 91px;
+    padding-left: 0px;
+    margin-bottom: 19px;
+  }
+  .home-text3 {
+    color: #0044ff;
+    font-size: 20px;
+    align-self: flex-start;
+    font-style: normal;
+    font-weight: 800;
+    margin-left: 120px;
+  }
+  .rfid_result {
+    color: #0077ff;
+    font-size: 30px;
+    align-self: center;
+    margin-right:60px;
+    margin-bottom: 20px;
+    font-style: normal;
+    font-weight: 800;
+    margin-left: 120px;
+    animation: scanning 1.5s infinite;
+  }
+
+  .scanned {
+    color: rgb(112, 255, 112);
+    animation: successblink 1s infinite;
+    font-size: 30px;
+    align-self: center;
+    margin-right:60px;
+    margin-bottom: 20px;
+    font-style: normal;
+    font-weight: 800;
+    margin-left: 120px;
+  }
+
+  .error {
+    color: red;
+    animation: errorblink 300ms infinite;
+    font-size: 30px;
+    align-self: center;
+    margin-right:60px;
+    margin-bottom: 20px;
+    font-style: normal;
+    font-weight: 800;
+    margin-left: 120px;
+  }
+
+  @keyframes errorblink {
+    0% {
+      opacity: 0;
+    }
+  
+    100% {
+      opacity: 1;
+    }
+  }
+  @keyframes successblink {
+    0% {
+      opacity: 1;
+    }
+    50% {
+    opacity: 0.5;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  @keyframes scanning {
+    0% {
+      opacity: 1;
+    }
+    50% {
+    opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  .scan{
+    -webkit-tap-highlight-color:  rgba(255, 255, 255, 0);
+  }
+
+  .home-form {
+    width: 385px;
+    height: 100%;
+    align-items: center;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  .home-text4 {
+    color: #ffffff;
+    font-size: 30px;
+    font-style: normal;
+    margin-top: var(--dl-space-space-twounits);
+    font-weight: 700;
+    margin-bottom: var(--dl-space-space-twounits);
+  }
+  .home-textinput {
+    font-size: 16px;
+    margin-top: 0px;
+    margin-bottom: var(--dl-space-space-twounits);
+  }
+  .home-textinput1 {
+    font-size: 16px;
+    margin-top: 0px;
+  }
+  .home-button {
+    color: #ffffff;
+    font-size: 20px;
+    font-style: normal;
+    margin-top: 24px;
+    font-weight: 700;
+    border-width: 0px;
+    margin-bottom: var(--dl-space-space-unit);
+    background-color: #0146ff;
+    -webkit-tap-highlight-color:  rgba(255, 255, 255, 0); 
+  }
+  .home-text5 {
+    color: #ffffff;
+    font-size: 12px;
+    margin-top: 0px;
+    margin-bottom: var(--dl-space-space-unit);
+  }
+  .home-button1 {
+    color: #ffffff;
+    font-size: 20px;
+    font-style: normal;
+    margin-top: 0px;
+    font-weight: 700;
+    background-color: #00a923;
+    -webkit-tap-highlight-color:  rgba(255, 255, 255, 0); 
+  }
+  .error-message{
+    margin-top: Unit;
+    color: red;
+    font-size: 16px;
+  }
+
+  .home-button:hover {
+    background-color: #006eff; /* Darker green color on hover */
+  }
+  
+  .home-button1:hover {
+    background-color: #00ff0d; /* Darker green color on hover */
+  }
+
+}
+@media(max-width: 767px) {
+  .home-header {
+    padding-left: var(--dl-space-space-twounits);
+    padding-right: var(--dl-space-space-twounits);
+  }
+}
+@media(max-width: 479px) {
+  .home-header {
+    padding: var(--dl-space-space-unit);
+  }
+}

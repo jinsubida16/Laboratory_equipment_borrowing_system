@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en" class="dark chromane-sonic-dark">
+<head>
+    <title>Superuser Settings</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+    <link rel="stylesheet" type="text/css" href="./static/superuser.css">
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
+
+    <style>
+        html {
+            scroll-behavior: smooth;
+          }
+        ::-webkit-scrollbar {
+            width: 6px;
+          }
+          
+          ::-webkit-scrollbar-track {
+            background: #1f1f1f;
+          }
+          
+          ::-webkit-scrollbar-thumb {
+            background-color: #686868;
+            border-radius: 6px;
+          }
+        body{
+            color: white;
+            scrollbar-width: thin;
+            scrollbar-color: #686868 #1f1f1f;
+            
+        }
+        .btn-primary{
+            margin-bottom: 50px;
+        }
+        .jumbotron{
+            background: #1d1d1d;
+            height: 350px;
+        }
+        .table-bordered{
+            color: white;
+        }
+        /* Set the background color of the table */
+        #itemTable {
+            background-color: black;
+        }
+    
+        /* Set the text color of the table cells */
+        #itemTable th,
+        #itemTable td {
+            background-color: #1f1f1f;
+            color: white;
+        }
+        /* Set the text color of the DataTable search bar and "Show entries" text */
+        #itemTable_filter input,
+        #itemTable_length select {
+            color: white;
+        }
+    
+        /* Set the background color of the DataTable search bar */
+        #itemTable_filter input {
+            background-color: #1f1f1f;
+            color: white;
+        }
+        
+        #userTable {
+            background-color: black;
+        }
+    
+        /* Set the text color of the table cells */
+        #userTable th,
+        #userTable td {
+            background-color: #1f1f1f;
+            color: white;
+        }
+        /* Set the text color of the DataTable search bar and "Show entries" text */
+        #userTable_filter input,
+        #userTable_length select {
+            color: white;
+        }
+    
+        /* Set the background color of the DataTable search bar */
+        #userTable_filter input {
+            background-color: #1f1f1f;
+            color: white;
+        }
+
+        /* Set the background color of the table */
+        #restrictedTable {
+            background-color: black;
+            color: white;
+        }
+    
+        /* Set the text color of the table cells */
+        #restrictedTable th,
+        #restrictedTable td {
+            background-color: #1f1f1f;
+            color: white;
+        }
+        /* Set the text color of the DataTable search bar and "Show entries" text */
+        #restrictedTable_filter input,
+        #restrictedTable_length select {
+            color: white;
+        }
+    
+        /* Set the background color of the DataTable search bar */
+        #restrictedTable_filter input {
+            background-color: #1f1f1f;
+            color: white;
+        }
+
+        /* Set the background color of the table */
+        #borrowTable {
+            background-color: black;
+            color: white;
+        }
+    
+        /* Set the text color of the table cells */
+        #borrowTable th,
+        #borrowTable td {
+            background-color: #1f1f1f;
+            color: white;
+        }
+        /* Set the text color of the DataTable search bar and "Show entries" text */
+        #borrowTable_filter input,
+        #borrowTable_length select {
+            color: white;
+        }
+    
+        /* Set the background color of the DataTable search bar */
+        #borrowTable_filter input {
+            background-color: #1f1f1f;
+            color: white;
+        }
+
+        .form-control{
+            background: #1f1f1f;
+            color: white;
+        }
+        .form-control:focus {
+            background: #1f1f1f; /* Set it to the same color as the default background */
+            color: white;
+        }
+
+        label{
+            color: white;
+        }
+
+        table{
+            background: #1f1f1f;
+            color: white;
+        }
+        .dataTables_info{
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="container mt-5">
+        <div class="container">
+            <h1 class="display">Administrator page</h1>
+            <p class="lead">Hello Admin {{ username }}!</p>
+            <hr class="my-4">
+            <a class="btn btn-primary" href="{{ url_for('logout') }}">Logout</a>
+        </div>
+        <div class="tabs">
+            <input type="radio" class="tabs__radio" name="tabs-example" id="tab1" checked>
+            <label for="tab1" class="tabs__label">Registered Users</label>
+            <div class="tabs__content">
+                <section class="contents" id="registeredUsers">
+                    <h2>Registered Users</h2>
+                    <table class="table table-bordered" id="userTable">
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Student Code</th>
+                                <th>Delete User</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in registered_users %}
+                            <tr>
+                                <td>{{ user.username }}</td>
+                                <td>{{ user.student_code}}</td>
+                                <td>
+                                    <form class="deletebuttonform" method="POST" action="{{ url_for('delete_user', user_id=user.id) }}" id="deletebutton">
+                                        <input type="hidden" name="action" value="delete_user">
+                                        <input type="hidden" name="user_id" value="{{ user.id }}">
+                                        <button type="button" class="btn btn-danger" onclick="confirmDelete('{{ user.id }}')">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>    
+                    </table>
+                </section>
+                </div>
+            <input type="radio" class="tabs__radio" name="tabs-example" id="tab2">
+            <label for="tab2" class="tabs__label">Restricted Users</label>
+            <div class="tabs__content">
+                <section class="contents">
+                    <h2>Restricted Users</h2>
+                    <table class="table table-bordered" id="restrictedTable">
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Student Code</th>
+                                <th>Unrestrict</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in restricted_users %}
+                            <tr>
+                                <td>{{ user.username }}</td>
+                                <td>{{ user.student_code }}</td>
+                                <td>
+                                    <form method="POST" action="{{ url_for('unrestrict_user', user_id=user.id) }}" id="deleteuser">
+                                        <input type="hidden" name="action" value="unrestrict_user">
+                                        <input type="hidden" name="user_id" value="{{ user.id }}">
+                                        <button type="button" class="btn btn-danger" onclick="confirmUnrestrict('{{ user.id }}')">Unrestrict</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </section>
+                </div>
+            <input type="radio" class="tabs__radio" name="tabs-example" id="tab3">
+            <label for="tab3" class="tabs__label">Add User/Item</label>
+            <div class="tabs__content">
+                <section class="contents">
+                    <h2 class="add-text">Add User</h2>
+                    <span id="rfidResult" class="rfid_result"></span>
+                    <a href="#scan" class="scan scanning" onclick="userRFID()" id="scan-id-text"><span class="home-text3">TAP HERE TO SCAN</span></a>
+                    <form method="POST" action="{{ url_for('add_user') }}" class="add-user-form" id="adduser">
+                        <div class="form-group">
+                            <label for="new_username">Username:</label>
+                            <input type="text" id="new_username" name="new_username" class="form-control" required>
+                        </div>
+                        <!-- Add the new_student_code input field for adding a new user -->
+                        <div class="form-group">
+                            <label for="new_student_code">Student Code:</label>
+                            <input type="text" id="new_student_code" name="new_student_code" class="form-control"  required pattern="[0-9A-Fa-f]{10}" title="Please enter valid student code number" required>
+                            
+                        </div>
+                        <div class="form-group">
+                            <label for="new_password">Password:</label>
+                            <input type="password" id="new_password" name="new_password" class="form-control" required>
+                        </div>
+        
+                        <div class="form-group">
+                            <label for="new_password">Add as admin?</label>
+                            <input type="checkbox" id="new_admin" name="new_admin" class="form-control checkbox">
+                        </div>
+                        <input type="hidden" name="action" value="add_user">
+                        <button type="submit" class="btn btn-primary">Add User</button>
+                    </form>
+                    <h2 class="add-text">Add Item</h2>
+                    <span id="itemResult" class="rfid_result"></span>
+                    <a href="#scan" class="scan scanning" onclick="scanRFID()" id="scan-id-text"><span class="home-text3">TAP HERE TO SCAN</span></a>
+                <form method="POST" action="{{ url_for('add_item') }}" id="additem" class="additem-form">
+                    <div class="form-group">
+                        <label for="item_code">Item code:</label>
+                        <input type="text" id="item_code" name="item_code" class="form-control" required>
+                        {% if item_error %}
+                        <div class="error-message">
+                            Item already exist!
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label for="item_type">Item Type:</label>
+                        <select id="item_type" name="item_type" class="form-control">
+                            <option value="kb">Keyboard</option>
+                            <option value="ms">Mouse</option>
+                            <option value="mnt">Monitor</option>
+                            <option value="psu">Power Supply</option>
+                            <option value="etc">Others</option>
+                        </select>
+                    </div>
+                    <input type="hidden" name="action" value="add_item">
+                    <button type="submit" class="btn btn-primary">Add Item</button>
+                </form>
+                </div>
+            <input type="radio" class="tabs__radio" name="tabs-example" id="tab4">
+            <label for="tab4" class="tabs__label">Registered Items</label>
+            <div class="tabs__content">
+                <section class="contents">
+                    <h2>Items List</h2>
+                    <table class="table table-bordered" id="itemTable">
+                        <thead>
+                            <tr>
+                                <th>ITEM ID</th>
+                                <th>TYPE</th>
+                                <th>DELETE ITEM</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in registered_items %}
+                            <tr>
+                                <td>{{ item.code}}</td>
+                                <td>
+                                    {% if item.type == 'kb' %}
+                                        KEYBOARD
+                                    {% elif item.type == 'ms' %}
+                                        MOUSE
+                                    {% elif item.type == 'mnt' %}
+                                        MONITOR
+                                    {% elif item.type == 'psu' %}
+                                        POWER SUPPLY
+                                    {% else %}
+                                        OTHERS
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <form method="POST" action="{{ url_for('delete_item', item_id=item.id) }}" id="deleteitem">
+                                        <input type="hidden" name="action" value="delete_item">
+                                        <input type="hidden" name="item_id" value="{{ item.id }}">
+                                        <button type="button" class="btn btn-danger" onclick="confirmRemove('{{ item.id }}')">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </section>
+                </div>
+            <input type="radio" class="tabs__radio" name="tabs-example" id="tab5">
+            <label for="tab5" class="tabs__label">Borrowed Items</label>
+            <div class="tabs__content">
+                <section class="contents" >
+                    <h2>Borrowed Items</h2>
+                    <table class="table table-bordered" id="borrowTable" >
+                        <thead>
+                            <tr>
+                                <th>Item code</th>
+                                <th>Item type</th>
+                                <th>Borrower</th>
+                                <th>Borrower ID</th>
+                                <th>BORROW TIME</th>
+                                <th>RETURN TIME</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for borrowed_item in borrowed_items %}
+                            <tr>
+                                <td>{{ borrowed_item.code }}</td>
+                                <td> 
+                                {% if borrowed_item.type == 'kb' %}
+                                    KEYBOARD
+                                {% elif borrowed_item.type == 'ms' %}
+                                    MOUSE
+                                {% elif borrowed_item.type == 'mnt' %}
+                                    MONITOR
+                                {% elif borrowed_item.type == 'psu' %}
+                                    POWER SUPPLY
+                                {% else %}
+                                    OTHERS
+                                {% endif %}
+                            </td>
+                                <td>{{ borrowed_item.borrower.username if borrowed_item.borrower else 'N/A' }}</td>
+                                <td>{{ borrowed_item.borrower.student_code if borrowed_item.borrower else 'N/A' }}</td>
+                                <td>{{ borrowed_item.timestamp.strftime('%I:%M:%S %p %Y-%m-%d') }}</td>
+                                <td>{{ borrowed_item.return_date.strftime('%I:%M:%S %p %Y-%m-%d') }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </section>
+            </div>
+        </div>
+
+
+    <script>
+        var isScanInProgress = false;
+
+        async function scanRFID() {
+              if (isScanInProgress) {
+            return;
+        }
+        isScanInProgress = true;
+    
+        var rfidResultElement = document.getElementById('itemResult');
+        var scanButton = document.getElementById('scan-id-text');
+
+    
+        rfidResultElement.classList.remove('error');
+        rfidResultElement.classList.remove('scanned');
+        rfidResultElement.classList.add('rfid_result');
+        document.getElementById('itemResult').innerText = '( SCANNING )';
+        scanButton.disabled = true;
+    
+        try {
+            console.log('Try block is working...');
+            const response = await fetch('/read_rfid', {
+                method: 'POST',
+            });
+    
+            const data = await response.json();
+    
+            if (data.rfid_id) {
+                rfidResultElement.innerText = data.rfid_id;
+                document.getElementById('item_code').value = data.rfid_id;
+                // Check if the scanned RFID is present in the user database
+                checkItemExist(data.rfid_id);
+
+            } else {
+                document.getElementById('itemResult').innerText = 'ID MISSING';
+                document.getElementById('item_code').value = 'ID MISSING';
+                rfidResultElement.classList.remove('scanned');
+                rfidResultElement.classList.remove('rfid_result');
+                rfidResultElement.classList.add('error');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            // Handle errors and keep the button disabled
+        } finally {
+            // Re-enable the button after processing (whether success or error)
+            scanButton.disabled = false;
+            isScanInProgress = false;
+        }
+    }
+
+    function checkItemExist(rfidValue) {
+        var rfidResultElement = document.getElementById('itemResult');
+        var scanButton = document.getElementById('scan-id-text');
+        // Send an asynchronous request to check if the RFID value exists in the user database
+        fetch('/check_item_exist', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ rfidValue: rfidValue }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.itemExist) {
+                document.getElementById('item_code').value = 'ITEM EXIST!';
+                rfidResultElement.classList.add('error');
+                rfidResultElement.classList.remove('scanned');
+                rfidResultElement.classList.remove('rfid_result');
+            } else {
+                // Handle the case when the RFID value does not exist
+                rfidResultElement.classList.add('scanned');
+                rfidResultElement.classList.remove('error');
+                rfidResultElement.classList.remove('rfid_result');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+
+    async function userRFID() {
+              if (isScanInProgress) {
+            return;
+        }
+        isScanInProgress = true;
+    
+        var rfidResultElement = document.getElementById('rfidResult');
+        var scanButton = document.getElementById('scan-id-text');
+        rfidResultElement.classList.remove('error');
+        rfidResultElement.classList.remove('scanned');
+        rfidResultElement.classList.add('rfid_result');
+        document.getElementById('rfidResult').innerText = '( SCANNING )';
+        scanButton.disabled = true;
+    
+        try {
+            console.log('Try block is working...');
+            const response = await fetch('/read_rfid', {
+                method: 'POST',
+            });
+    
+            const data = await response.json();
+    
+            if (data.rfid_id) {
+                document.getElementById('rfidResult').innerText = data.rfid_id;
+                document.getElementById('new_student_code').value = data.rfid_id;
+                // Check if the scanned RFID is present in the user database
+                checkUserExist(data.rfid_id);
+            } else {
+                document.getElementById('rfidResult').innerText = 'ID MISSING';
+                document.getElementById('new_student_code').value = 'ID MISSING';
+                rfidResultElement.classList.remove('scanned');
+                rfidResultElement.classList.remove('rfid_result');
+                rfidResultElement.classList.add('error');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            // Handle errors and keep the button disabled
+        } finally {
+            // Re-enable the button after processing (whether success or error)
+            scanButton.disabled = false;
+            isScanInProgress = false;
+        }
+    }
+
+    function checkUserExist(rfidValue) {
+        var rfidResultElement = document.getElementById('rfidResult');
+        var scanButton = document.getElementById('scan-id-text');
+        // Send an asynchronous request to check if the RFID value exists in the user database
+        fetch('/check_user_exist', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ rfidValue: rfidValue }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.userExist) {
+                document.getElementById('new_student_code').value = 'USER EXIST!';
+                rfidResultElement.classList.add('error');
+                rfidResultElement.classList.remove('scanned');
+                rfidResultElement.classList.remove('rfid_result');
+            } else {
+                rfidResultElement.classList.add('scanned');
+                rfidResultElement.classList.remove('error');
+                rfidResultElement.classList.remove('rfid_result');
+                // Handle the case when the RFID value does not exist
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+    
+    
+        function confirmDelete(userId) {
+            if (confirm("Are you sure you want to delete this account?")) {
+                // If the user confirms, submit the form for deletion
+                document.querySelector(`form input[name="user_id"][value="${userId}"]`).form.submit();
+            }
+
+        }
+        function confirmUnrestrict(userId) {
+            if (confirm("Are you sure you want to unrestrict this account?")) {
+                // If the user confirms, submit the form for deletion
+                document.querySelector(`form input[name="user_id"][value="${userId}"]`).form.submit();
+            }
+
+        }
+
+        function confirmRemove(itemId) {
+            if (confirm("Are you sure you want to delete this item?")) {
+                // If the user confirms, submit the form for deletion
+                document.querySelector(`form input[name="item_id"][value="${itemId}"]`).form.submit();
+            }
+
+        }
+        $(document).ready(function () {
+            $('#userTable').DataTable({
+                "order": [[1, "asc"]],  // Sort by the second column (TYPE) in ascending order
+            });
+        });
+
+        $(document).ready(function () {
+            $('#restrictedTable').DataTable({
+                "order": [[1, "asc"]],  // Sort by the second column (TYPE) in ascending order
+            });
+        });
+
+            $(document).ready(function () {
+                $('#itemTable').DataTable({
+                    "order": [[1, "asc"]],  // Sort by the second column (TYPE) in ascending order
+                });
+            });
+
+            $(document).ready(function () {
+                $('#borrowTable').DataTable({
+                    "order": [[1, "asc"]],  // Sort by the second column (TYPE) in ascending order
+                });
+            }); 
+    </script>
+</body>
+</html>

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <style>
+        /* Define the CSS styles for the webpage title */
+        body {
+            position: relative;
+        }
+        
+        video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+        .webpage-title {
+            font-family: "fantasy"; /* Specify the desired font-family */
+            font-size: 25px; /* Specify the desired font size (e.g., 24 pixels) */
+            margin-left: 75px;
+        }
+        .nav-link-margin {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+    <body>
+        <video autoplay loop muted>
+            <source src="{{ url_for('static', filename='background.mp4') }}" type="video/mp4">
+            <!-- You can add multiple source elements for different video formats -->
+        </video>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container">
+                <span class="navbar-text" style="width: 0%; text-align: right;">Welcome, {{ user.username }}</span> <!-- Account name -->
+                <span class="navbar-text" style="width: 100%; text-align: center;">
+                    <a class="navbar-brand webpage-title" href="#">LABORATORY EQUIPMENT BORROW AND RETURN SYSTEM</a>
+                </span>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <button id="cartModalButton" class="btn btn-success nav-link-margin" data-toggle="modal" data-target="#cartModal">CART</button>  <!-- Cart list button -->
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-primary nav-link-margin" href="{{ url_for('logout') }}">Logout</a> <!-- Logout button -->
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    <div class="container">
+        <div class="jumbotron mt-5">
+            <h1 class="display-4">Welcome to the Dashboard</h1>
+            <p class="lead">Hello {{ user.username }}!</p>
+            <hr class="my-4">
+            <a class="btn btn-primary" href="{{ url_for('logout') }}">Logout</a>
+        </div>
+    </div>
+<!-- Sample inventory centered on the screen -->
+<h2 class="text-center">Available Items</h2>
+<<div class="container">
+    <div class="table-responsive">
+        <table class="table table-bordered table-sm mx-auto">
+            <thead>
+                <tr>
+                    <th>Item Type</th>
+                    <th>Quantity Available</th>
+                    <th>Select Quantity</th>
+                    <th>Add to Cart</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in grouped_items %}
+                <tr>
+                    <td>{{ item.type }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>
+                        <form id="addToCartForm_{{ item.id }}" method="POST" action="{{ url_for('add_to_cart', item_id=item.id) }}">
+                            <input type="hidden" name="action" value="add_to_cart">
+                            <input type="hidden" name="item_type" value="{{ item.type }}">
+                            <input type="number" name="quantity" id="quantity_{{ item.id }}" min="1" max="{{ item.quantity }}" required>
+                        </form>
+                    </td>
+                    <td>
+                        <form method="POST" action="{{ url_for('add_to_cart', item_id=item['id']) }}">
+                            <input type="hidden" name="action" value="add_to_cart">
+                            <input type="hidden" name="item_type" value="{{ item.type }}">
+                            <button type="button" class="btn btn-success btn-sm" onclick="addToCart('{{ item.id }}')">Add to Cart</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+<script>
+    // Function to update item counts by type
+    function updateItemCounts() {
+        // Get all unique item types in the table
+        var itemTypes = [...new Set($("td[data-type]").map(function() {
+            return $(this).data("type");
+        }).get())];
+
+        // Send AJAX requests to get item counts for each type
+        itemTypes.forEach(function(itemType) {
+            $.get(`/count_items_by_type/${itemType}`, function(data) {
+                $(`td[data-type="${itemType}"]`).text(data.count);
+            });
+        });
+    }
+
+    $(document).ready(function () {
+        $('#cartModalButton').click(function () {
+            $('#cartModal').modal('show');
+            // Update item counts when the cart modal is shown
+            updateItemCounts();
+        });
+    });
+</script>
+
+    <!-- CART Modal -->
+    <div class="modal fade" id="cartModal" tabindex="-1" role="dialog" aria-labelledby="cartModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cartModalLabel">CART</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Place your item list table here -->
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Item Name</th>
+                                <th>Quantity</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in cart_items %}
+                            <tr>
+                                <td>{{ item.name }}</td>
+                                <td>{{ item.quantity }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <!-- Total number of items -->
+                    <p>Total Items: {{ cart_items|length }}</p>
+                    <!-- Time of return input -->
+                    <div class="form-group">
+                        <label for="timeOfReturn">Time of Return:</label>
+                        <div class="d-flex">
+                            <select id="hours" name="hours" class="form-control" style="width: 50%;">
+                                {% for hour in range(1, 13) %}
+                                    <option value="{{ hour }}">{{ hour }}</option>
+                                {% endfor %}
+                            <!-- Add more options for hours -->
+                            </select>
+                            <select id="minutes" name="minutes" class="form-control" style="width: 50%;">
+                                <option value="00">00</option>
+                                <option value="15">15</option>
+                                <option value="30">30</option>
+                                <option value="45">45</option>
+                            </select>
+                            <select id="day" name="day" class="form-control" style="width: 50%;">
+                                <option value="AM">AM</option>
+                                <option value="PM">PM</option>
+                            </select>
+                        </div>
+                    </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Function to update the cart table using AJAX
+        function updateCartTable() {
+            $.get('/get_cart', function (data)) {
+                var cartTableBody = $('#cartTableBody');
+                cartTableBody.empty();
+                
+                // Loop through the cart items and add rows to the table
+                data.forEach(function (item) {
+                    var row = '<tr><td>' + item.name + '</td><td>' + item.quantity + '</td></tr>';
+                    cartTableBody.append(row);
+                });
+            }
+        
+            // Attach the click event to the "CART" button
+            $('#cartModalButton').click(function () {
+                $('#cartModal').modal('show');
+                // Update the cart table when the cart modal is shown
+                updateCartTable();
+            });
+        };
+    </script>
+    <script>
+        function addToCart(itemId) {
+            var form = document.getElementById('addToCartForm_' + itemId);
+            var quantityInput = document.getElementById('quantity_' + itemId);
+            var quantity = quantityInput.value;
+
+            $.ajax({
+                    type: 'POST',
+                    url: form.action,
+                    data: {
+                        action: form.querySelector('input[name="action"]').value,
+                        item_type: form.querySelector('input[name="item_type"]').value,
+                        quantity: quantity
+                    },
+            success: function (data) {
+                // Handle the success response here
+                console.log('Item added to the cart:', data);
+
+                // You should update the available items table based on the updated data
+                // This can be done by making an additional AJAX request to fetch the updated available items.
+                updateAvailableItemsTable();
+
+            // You can also update the cart UI or display a success message.
+            },
+            error: function (error) {
+                // Handle errors, e.g., display an error message.
+                console.error('Error adding item to cart:', error);
+            }
+            });
+        }
+    </script>
+    <script>
+        function updateAvailableItemsTable() {
+    $.get('/get_available_items', function (data) {
+        // Update the available items table based on the updated data
+        // You can replace the table contents with the received data.
+        // For example, you can use jQuery to update the HTML of the table.
+        var tableBody = $('#availableItemsTable tbody');
+        tableBody.empty();
+
+        data.forEach(function (item) {
+            var row = '<tr><td>' + item.type + '</td><td>' + item.quantity + '</td></tr>';
+            tableBody.append(row);
+        });
+    });
+}
+</script>
+</body>
+</html>

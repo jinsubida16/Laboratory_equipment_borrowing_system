@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>register_page</title>
+    <meta property="og:title" content="register_page" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+
+    <style data-tag="reset-style-sheet">
+      html {  line-height: 1.15;}body {  margin: 0;}* {  box-sizing: border-box;  border-width: 0;  border-style: solid;}p,li,ul,pre,div,h1,h2,h3,h4,h5,h6,figure,blockquote,figcaption {  margin: 0;  padding: 0;}button {  background-color: transparent;}button,input,optgroup,select,textarea {  font-family: inherit;  font-size: 100%;  line-height: 1.15;  margin: 0;}button,select {  text-transform: none;}button,[type="button"],[type="reset"],[type="submit"] {  -webkit-appearance: button;}button::-moz-focus-inner,[type="button"]::-moz-focus-inner,[type="reset"]::-moz-focus-inner,[type="submit"]::-moz-focus-inner {  border-style: none;  padding: 0;}button:-moz-focus,[type="button"]:-moz-focus,[type="reset"]:-moz-focus,[type="submit"]:-moz-focus {  outline: 1px dotted ButtonText;}a {  color: inherit;  text-decoration: inherit;}input {  padding: 2px 4px;}img {  display: block;}
+    </style>
+    <style data-tag="default-style-sheet">
+      html {
+        font-family: Inter;
+        font-size: 16px;
+      }
+
+      body {
+        font-weight: 400;
+        font-style:normal;
+        text-decoration: none;
+        text-transform: none;
+        letter-spacing: normal;
+        line-height: 1.15;
+        color: var(--dl-color-gray-black);
+        background-color: var(--dl-color-gray-white);
+        height: auto;
+
+      }
+    </style>
+  </head>
+  <body>
+    <link rel="stylesheet" href="./static/register_style.css" />
+    <div>
+      <link href="./static/register.css" rel="stylesheet" />
+
+      <div class="home-container">
+        <header data-role="Header" id="login-header" class="home-header">
+          <span id="login-header-text" class="home-text">
+            <span class="home-text1">
+              LABORATORY EQUIPMENT BORROWING SYSTEM
+            </span>
+            <br />
+          </span>
+        </header>
+
+        <div id="login-container" class="home-container1">
+          <div id="scan-container" class="home-container2">
+            <a href="#scan" class="scan scanning" onclick="scanRFID()"><img
+              src="./static/images/scan_id_logo.png"
+              alt="image"
+              id="scan-id-logo"
+              class="home-image"
+            /></a>
+            <span id="rfidResult" class="rfid_result"></span>
+            <a href="#scan" class="scan scanning" onclick="scanRFID()" id="scan-id-text"><span class="home-text3">TAP HERE TO SCAN ID</span></a>
+          </div>
+
+          <form method="POST" action="{{ url_for('register')}}" id="login-form-container" class="home-form">
+            <div class="home-container3">
+              <div class="home-container4">
+                <div class="home-container5">
+                  <div class="home-container6">
+                    <label id="login-text" class="home-text4">REGISTER</label>
+                    <input
+                      type="text"
+                      placeholder="Enter username or ID"
+                      required=""
+                      id="username"
+                      name="username"
+                      class="home-textinput input"
+                    />
+                  </div>
+                  <input
+                    type="password"
+                    placeholder="Enter Password"
+                    required=""
+                    id="password"
+                    name="password"
+                    class="home-textinput1 input"
+                  />
+                  <input type="hidden" id="hidden_student_code" name="student_code" value="">
+                </div>
+                {% if id_missing %}
+                <div class="error-message">
+                    No ID Scanned. Please scan your ID!
+                </div>
+                {% endif %}
+                {% if register_failed %}
+                <div class="error-message">
+                    Register failed. User already Registered!
+                </div>
+                {% endif %}
+
+                <button
+                  type="submit"
+                  id="login-button"
+                  class="home-button button"
+                >
+                  REGISTER
+                </button>
+              </div>
+              <span id="account-missing-text" class="home-text5">
+                <span>Already have an account?</span>
+                <br />
+              </span>
+            </div>
+            <button
+              type="button"
+              href="{{ url_for('login') }}"
+              id="register-button"
+              class="home-button1 button"
+            >
+            <a href="{{ url_for('login') }}" class="btn btn-link">LOGIN</a>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <script>
+    var isScanInProgress = false;
+
+    async function scanRFID() {
+      if (isScanInProgress) {
+    return;
+}
+isScanInProgress = true;
+
+var rfidResultElement = document.getElementById('rfidResult');
+var scanButton = document.getElementById('scan-id-text');
+
+rfidResultElement.classList.remove('error');
+rfidResultElement.classList.remove('scanned');
+rfidResultElement.classList.add('rfid_result');
+document.getElementById('rfidResult').innerText = '( SCANNING )';
+scanButton.disabled = true;
+
+try {
+    console.log('Try block is working...');
+    const response = await fetch('/read_rfid', {
+        method: 'POST',
+    });
+
+    const data = await response.json();
+
+    if (data.rfid_id) {
+      rfidResultElement.innerText = data.rfid_id;
+      document.getElementById('hidden_student_code').value = data.rfid_id;
+
+      // Check if the scanned RFID is present in the user database
+      checkUserExist(data.rfid_id);
+
+  } else {
+      document.getElementById('rfidResult').innerText = 'ID MISSING';
+      document.getElementById('hidden_student_code').value = 'ID MISSING';
+      rfidResultElement.classList.remove('scanned');
+      rfidResultElement.classList.remove('rfid_result');
+      rfidResultElement.classList.add('error');
+  }
+} catch (error) {
+    console.error('Error:', error);
+    // Handle errors and keep the button disabled
+} finally {
+    // Re-enable the button after processing (whether success or error)
+    scanButton.disabled = false;
+    isScanInProgress = false;
+  }
+}
+
+  function checkUserExist(rfidValue) {
+    // Send an asynchronous request to check if the RFID value exists in the user database
+    fetch('/check_user_exist', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ rfidValue: rfidValue }),
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.userExist) {
+      // Handle the login form submission here
+        document.getElementById('rfidResult').classList.remove('scanned', 'rfid_result');
+        document.getElementById('rfidResult').classList.add('error');
+        document.getElementById('login-form-container').submit();
+    } else {
+        // Handle the case when the RFID value does not exist
+        document.getElementById('rfidResult').classList.remove('error', 'rfid_result');
+        document.getElementById('rfidResult').classList.add('scanned');
+    }
+  })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+</script>
+  
+</html>
